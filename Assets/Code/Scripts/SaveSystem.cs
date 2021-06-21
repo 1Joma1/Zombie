@@ -18,11 +18,17 @@ public static class SaveSystem
     public static PlayerData Load()
     {
         var path = Application.persistentDataPath + "/level.data";
-        if (!File.Exists(path)) return new PlayerData(1, new List<int> {0});
+        if (!File.Exists(path)) return new PlayerData(1, new List<int>());
         BinaryFormatter binary = new BinaryFormatter();
         FileStream fileStream = new FileStream(path, FileMode.Open);
         PlayerData data = binary.Deserialize(fileStream) as PlayerData;
         fileStream.Close();
         return data;
+    }
+
+    public static void Clear()
+    {
+        var path = Application.persistentDataPath + "/level.data";
+        File.Delete(path);
     }
 }

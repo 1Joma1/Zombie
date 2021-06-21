@@ -5475,7 +5475,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: O p t i o n
+  m_Text: C l e a r
 --- !u!222 &1637851628
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6111,7 +6111,7 @@ GameObject:
   - component: {fileID: 1768092696}
   - component: {fileID: 1768092695}
   m_Layer: 5
-  m_Name: Option
+  m_Name: Clear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

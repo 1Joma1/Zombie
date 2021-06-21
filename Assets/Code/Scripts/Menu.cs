@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class Menu : MonoBehaviour
         PlayerData data = SaveSystem.Load();
         transform.Find("Play").GetComponent<Button>().onClick.AddListener(() => OpenScene(data.level));
         transform.Find("Level").gameObject.GetComponent<Button>().onClick.AddListener(OpenLevelMenu);
+        transform.Find("Clear").gameObject.GetComponent<Button>().onClick.AddListener(Clear);
         levelMenu.transform.Find("Back").GetComponent<Button>().onClick.AddListener(CloseLevelMenu);
         for (var i = 1; i <= data.level; i++)
         {
@@ -19,7 +21,11 @@ public class Menu : MonoBehaviour
             var button = levelMenu.transform.Find(level.ToString());
             button.GetComponent<Button>().interactable = true;
             button.GetComponent<Button>().onClick.AddListener(() => OpenScene(level));
-            switch (data.star[i])
+            Debug.Log("level - " + level);
+            Debug.Log("star - " + data.star.Count);
+            if (!data.star.Any() || data.star.Count<level) return;
+            var j = level - 1;
+            switch (data.star[j])
             {
                 case 1:
                     button.transform.Find("1").GetComponent<Image>().sprite = star;
@@ -41,6 +47,12 @@ public class Menu : MonoBehaviour
     {
         levelMenu.gameObject.SetActive(true);
         gameObject.SetActive(false);
+    }
+
+    private void Clear()
+    {
+        SaveSystem.Clear();
+        SceneManager.LoadScene("Menu");
     }
 
     private void CloseLevelMenu()
