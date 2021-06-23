@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,21 +21,20 @@ public class LevelStarSetter : MonoBehaviour
     private void LevelComplete(int star)
     {
         var level = int.Parse(SceneManager.GetActiveScene().name);
-        var oldStar = SaveSystem.Load().star;
+        var data = SaveSystem.LoadPlayer();
 
-        
-        if (oldStar.Count < level)
+        if (data.star.Count < level)
         {
-            oldStar.Add(star);
+            data.star.Add(star);
         }
         else
         {
             var j = level - 1;
-            oldStar[j] = star;
+            data.star[j] = star;
         }
+
         level++;
-        SaveSystem.Save(new PlayerData(level, oldStar));
-        if (Application.CanStreamedLevelBeLoaded(level.ToString()))
+        if (Application.CanStreamedLevelBeLoaded(level.ToString()) && Energy.UseEnergy())
         {
             SceneManager.LoadScene(level.ToString());
         }
@@ -42,5 +42,12 @@ public class LevelStarSetter : MonoBehaviour
         {
             SceneManager.LoadScene("Menu");
         }
+
+        if (level < data.level)
+        {
+            level = data.level;
+        }
+
+        SaveSystem.SavePlayer(new PlayerData(level, data.star, data.energy, DateTime.Now));
     }
 }
